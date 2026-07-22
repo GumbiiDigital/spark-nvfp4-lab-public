@@ -1,51 +1,27 @@
-# Case Study: A Benchmark Is a Comparison Contract
+# Case study: a benchmark is a comparison contract
 
-## Context
+## Actual problem
 
-Quantization experiments are easy to overstate. A single speed or memory result can hide changes in quality, reliability, startup, or workload shape.
+The private lab had scripts for quantization, evaluation, performance, serving, and pipeline orchestration. Without a common record, a fast result could hide a quality regression, memory-accounting error, or unreliable startup.
 
-## Problem
+## Source-backed sequence
 
-Results become hard to compare when provenance, controls, warmup, workload, retries, and quality checks are implicit.
+1. The SOP established a local-first reproducible method.
+2. Memory accounting was corrected for unified memory rather than relying on an unsupported field.
+3. Release planning and card rendering were added around BF16/NVFP4 fixtures.
+4. CI and shell tests check the reporting path.
+5. The lab remains experimental; a fixture is not a measured claim.
 
-## What I built
+## Failed hypotheses
 
-The public experiment contract separates:
+- One throughput number answers suitability: false.
+- Free-memory reporting can be assumed portable: false.
+- A quantized artifact is successful without provenance and quality checks: false.
 
-- source artifact provenance;
-- quantization method and intent;
-- baseline and candidate identity;
-- controlled variables;
-- warmup from measurement;
-- memory, speed, quality, and reliability comparisons;
-- failure handling; and
-- publication limitations.
+## Bounded tests and acceptance gates
 
-## Engineering decisions
+The source defines provenance, controlled variables, warmup/measurement separation, quality, reliability, and publication limits. Public validation checks only public JSON, Markdown, and privacy boundaries.
 
-- Provenance is required before comparison.
-- Baseline and candidate share the same declared workload class.
-- Quality is a gate, not an afterthought.
-- Reliability includes failures and retries, not only successful samples.
-- Qualitative values are used in the public example to avoid publishing private measurements.
-- Unknown remains an allowed result.
+## Result
 
-## Representative artifact
-
-The synthetic benchmark record is an original, fictional comparison record. It contains provenance class, controlled variables, qualitative outcomes, quality gates, and limitations without asserting that a benchmark ran.
-
-## Evidence available here
-
-- The example parses as JSON.
-- The record identifies itself as synthetic.
-- Provenance and all comparison dimensions are explicit.
-- The publication checker rejects common private-data patterns.
-- CI runs the same checker.
-
-## Lessons
-
-The number is not the experiment. The experiment is the contract that makes the number interpretable and repeatable.
-
-## Limitations
-
-No model, quantized artifact, private path, benchmark output, or live measurement is included. Compatibility and performance remain unproven by this public example.
+The durable result is a repeatable comparison contract with explicit unknowns. Performance and quality remain workload-specific.

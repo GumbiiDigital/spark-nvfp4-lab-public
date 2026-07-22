@@ -1,69 +1,47 @@
-# Spark NVFP4 Lab Public
+# Spark NVFP4 Lab
 
-I built this repository to document a reproducible method for NVFP4 experimentation without publishing private artifacts or pretending that one benchmark answers every deployment question. The method tracks provenance, quantization intent, benchmark controls, quality, speed, memory, and reliability as separate evidence.
+I maintain this as a local experiment record for NVFP4 quantization and inference workflows. The private source baseline is d1f5bf0. It contains the SOP, shell pipeline, evaluation/performance/quantization helpers, release fixtures, security notes, and tests.
 
 ## What I built
 
-The public framework covers:
+1. Provenance-first quantization and serving workflow.
+2. Separate scripts for quantization, performance, evaluation, serving, and pipeline orchestration.
+3. Release fixtures for BF16 and NVFP4 evaluation, performance, and quantization manifests.
+4. A rendered experiment card and shell test for repeatable reporting.
+5. Security guidance and outside-review hooks.
+6. A methodology treating memory, speed, quality, and reliability as separate gates.
 
-- source artifact provenance;
-- explicit quantization configuration;
-- immutable experiment intent;
-- warmup and measurement separation;
-- baseline and candidate comparison;
-- memory, speed, quality, and reliability dimensions;
-- failure and retry accounting; and
-- result publication with known limits.
+## Recorded results
+
+| Observation | Source evidence | Status |
+|---|---|---|
+| Baseline d1f5bf0 | private HEAD | Historical |
+| BF16 and NVFP4 result records exist as release fixtures | tests/fixtures/release-sample | Structural fixture |
+| Quantization, performance, evaluation, serving, and pipeline scripts are tracked | scripts/ | Historical inventory |
+| SOP records unified-memory accounting and release planning lessons | source SOP history | Historical |
+| Report rendering and release fixture tests are tracked | tests and CI | Source-backed check |
+
+Fixtures establish record shape; they are not presented as live benchmark claims.
 
 ## Why it matters
 
-A smaller or faster artifact is not automatically better. Quantization can change memory use, startup behavior, throughput, output quality, numerical stability, and operational reliability in different ways.
-
-I want every comparison to state what was held constant and what remains unproven.
+A smaller artifact is not automatically better. Quantization can change memory, throughput, quality, startup, and reliability in different directions.
 
 ## Engineering approach
 
-Each experiment record includes provenance class, synthetic artifact identity, method intent, workload class, controlled variables, qualitative comparison fields, quality gates, reliability observations, and limitations.
+Runs start with provenance and controlled intent, separate warmup from measurement, compare baseline and candidate, record quality and reliability, and publish limitations. Unknown remains valid.
 
-The public example uses qualitative outcomes instead of private operational measurements. It is a schema demonstration, not a benchmark claim.
-
-## Synthetic public-safe architecture
-
-The diagram shows the experiment pipeline from provenance through review using only synthetic artifacts.
+## Sanitized architecture boundary
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Representative work and artifacts
-
-- [Case study](docs/CASE-STUDY.md) - designing a comparison that does not hide tradeoffs.
-- [Synthetic benchmark record](examples/synthetic-benchmark-record.json) - a provenance and comparison schema.
-- [Publication safety](docs/PUBLICATION-SAFETY.md) - artifact and result boundary.
-- [Share copy](docs/SHARE.md) - concise public narrative.
-- [Safety checker](scripts/check_publication_safety.py) - repository privacy gate.
-
-## Evidence and lessons
-
-The public evidence is structural: original methodology, valid synthetic JSON, explicit comparison dimensions, a synthetic diagram, and automated privacy checks. No performance or quality result is claimed.
-
-The central lesson is that benchmark reproducibility depends on provenance and controls as much as it depends on the measured value.
-
 ## Repository map
 
-| Path | Purpose |
-|---|---|
-| README.md | Experiment framework and limits |
-| docs/CASE-STUDY.md | Comparison-method case study |
-| docs/ARCHITECTURE.md | Synthetic Mermaid experiment flow |
-| docs/PUBLICATION-SAFETY.md | Publication rules |
-| docs/SHARE.md | Share-ready copy |
-| examples/ | Synthetic benchmark JSON |
-| scripts/check_publication_safety.py | Privacy and structure checker |
-| .github/workflows/publication-safety.yml | CI gate |
+- [docs/CASE-STUDY.md](docs/CASE-STUDY.md)
+- [docs/NVFP4-EXPERIMENT-RECORD.md](docs/NVFP4-EXPERIMENT-RECORD.md)
+- [docs/PUBLICATION-SAFETY.md](docs/PUBLICATION-SAFETY.md)
+- [examples/synthetic-benchmark-record.json](examples/synthetic-benchmark-record.json)
 
-## Publication boundary
+## Evidence rules and limits
 
-This is a public project interface, not an operational benchmark repository. I exclude live addresses, hostnames, hardware identities, accounts, local paths, credentials, model locations, raw telemetry, private artifacts, service inventories, private topology, equipment maps, and operational commands. Examples are synthetic and do not reproduce a live environment.
-
-## Limitations
-
-This repository does not ship models, quantized artifacts, benchmark outputs, private measurements, or deployment status. The example does not prove NVFP4 compatibility, speed, memory savings, quality, or reliability on a particular system.
+Statements above are historical or structural. This public interface ships no model, quantized artifact, private path, live benchmark, or deployment status. Current performance requires a fresh, provenance-backed run.
