@@ -1,15 +1,11 @@
 ```mermaid
 flowchart LR
-  S["Synthetic source artifact"] --> P["Provenance record"]
-  P --> Q["Quantization intent"]
-  Q --> B["Controlled benchmark plan"]
-  B --> M["Memory comparison"]
-  B --> T["Speed comparison"]
-  B --> U["Quality gates"]
-  B --> R["Reliability observations"]
-  M --> E["Evidence review"]
-  T --> E
-  U --> E
-  R --> E
-  E --> L["Limits and publication decision"]
+    P["Artifact provenance and experiment intent"] --> Q["Quantization candidate"]
+    Q --> B["Baseline and candidate run"]
+    B --> M["Memory and speed"]
+    B --> E["Quality and reliability"]
+    M --> G{"Quality, provenance, and repeatability gates"}
+    E --> G
+    G -->|pass with limitations| C["Experiment card and report"]
+    G -->|unknown or fail| U["Record failure and stop promotion"]
 ```
