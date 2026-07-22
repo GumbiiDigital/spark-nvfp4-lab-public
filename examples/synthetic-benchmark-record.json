@@ -1,0 +1,54 @@
+{
+  "schema_version": "public-example-v1",
+  "synthetic": true,
+  "provenance": {
+    "source_artifact": "synthetic-baseline",
+    "source_revision": "placeholder",
+    "quantization_method": "NVFP4",
+    "candidate_artifact": "synthetic-candidate"
+  },
+  "experiment": {
+    "state": "not_run",
+    "workload_class": "representative_local_inference",
+    "warmup_separate": true,
+    "controlled_variables": [
+      "prompt_set",
+      "runtime_intent",
+      "sampling_policy",
+      "measurement_method"
+    ]
+  },
+  "comparisons": {
+    "memory": "unknown",
+    "speed": "unknown",
+    "quality": "unknown",
+    "reliability": "unknown"
+  },
+  "quality_gates": [
+    {
+      "name": "output_structure",
+      "result": "not_run"
+    },
+    {
+      "name": "reference_agreement",
+      "result": "not_run"
+    },
+    {
+      "name": "failure_rate_review",
+      "result": "not_run"
+    }
+  ],
+  "reliability": {
+    "failures_included": true,
+    "retries_included": true,
+    "result": "not_run"
+  },
+  "publication": {
+    "claim_allowed": false,
+    "reason": "Synthetic schema example with no executed benchmark."
+  },
+  "limitations": [
+    "No model or quantized artifact is included.",
+    "No private measurement or compatibility result is claimed."
+  ]
+}
