@@ -45,3 +45,8 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 ## Evidence rules and limits
 
 Statements above are historical or structural. This public interface ships no model, quantized artifact, private path, live benchmark, or deployment status. Current performance requires a fresh, provenance-backed run.
+
+## Copyright
+
+Copyright (c) 2026 Gumbii Digital. All rights reserved. See
+[COPYRIGHT.md](COPYRIGHT.md) for the publication and reuse terms.
