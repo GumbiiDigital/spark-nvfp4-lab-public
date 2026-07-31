@@ -1,0 +1,29 @@
+# Notice
+
+This is an independently maintained Gumbii Digital engineering record.
+
+The reproduction target and build diagnosis originated with Light Foundry:
+https://x.com/light_foundry/status/2082302264480579891
+
+The tested container lineage came from ciprianveg's public GLM-5.2 on DGX
+Spark project:
+https://github.com/ciprianveg/gb10-glm-5.2
+
+The build patch targets a pinned vLLM revision. vLLM is an external Apache-2.0
+project:
+https://github.com/vllm-project/vllm
+
+The serving stack references external model checkpoints from QuantTrio and
+Baseten:
+https://huggingface.co/QuantTrio/GLM-5.2-Int4-Int8Mix
+https://huggingface.co/baseten/GLM-5.2-Vision-NVFP4
+
+No model weights, compiled extensions, container images, CUDA libraries, or
+NVIDIA libraries are distributed in this repository.
+
+NVIDIA, DGX, CUDA, GB10, GLM, vLLM, Hugging Face, and other third-party names
+and trademarks remain the property of their respective owners. Their use is
+for accurate technical identification and does not imply endorsement.
+
+Original material in this repository remains governed by COPYRIGHT.md unless
+a file or third-party notice states otherwise.

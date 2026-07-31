@@ -1,0 +1,120 @@
+{
+  "schema_version": "glm52-nvfp4-public-result-v1",
+  "record_type": "measured_summary",
+  "public_safe": true,
+  "historical": true,
+  "hardware": {
+    "accelerator": "NVIDIA GB10",
+    "accelerator_count": 8,
+    "tensor_parallel_size": 8
+  },
+  "software": {
+    "cuda": "13.2.1",
+    "driver": "580.159.03",
+    "vllm_commit": "264bce1da81e27d638e7cf265b4cbd125d023c38"
+  },
+  "build": {
+    "torch_cuda_arch_list": "12.1a",
+    "candidate_extension_sha256": "7a64f63055f1dc7f33fd83682ae6183d403e24567dad5d9177a23c594c9a5536",
+    "sm_121a_entries": 63,
+    "sm_120_entries": 0
+  },
+  "profile": {
+    "model_class": "GLM-5.2-Vision Int4-Int8Mix",
+    "text_checkpoint": "QuantTrio/GLM-5.2-Int4-Int8Mix",
+    "vision_checkpoint": "baseten/GLM-5.2-Vision-NVFP4",
+    "speculative_checkpoint_class": "matching text checkpoint",
+    "kv_cache_dtype": "nvfp4_ds_mla",
+    "kv_gmem_stride_bytes": 432,
+    "kv_cache_bytes_per_rank": 46817928192,
+    "kv_pool_tokens": 1264256,
+    "max_model_len": 1000000,
+    "nominal_concurrency_at_max_length": 1.26,
+    "max_num_seqs": 8,
+    "max_num_batched_tokens": 2048
+  },
+  "correctness": {
+    "deterministic_text": {
+      "passed": 4,
+      "attempted": 4
+    },
+    "needle_matrix": {
+      "passed": 9,
+      "attempted": 9,
+      "depths": [
+        50000,
+        200000,
+        500000
+      ],
+      "positions": [
+        "front",
+        "middle",
+        "end"
+      ]
+    },
+    "near_one_million": {
+      "prompt_tokens": 999913,
+      "exact_answer_pass": true,
+      "latency_seconds": 1863.2378600419906,
+      "prefill_tokens_per_second": 536.6851309146541
+    },
+    "vision_coordinate": {
+      "accepted_result": [
+        600,
+        125
+      ],
+      "expected": [
+        630,
+        145
+      ],
+      "tolerance_pixels": 35,
+      "bimodality_disclosed": true
+    }
+  },
+  "performance": {
+    "prompt_tokens": 2048,
+    "output_tokens_per_request": 1500,
+    "prompt_mode": "orchid_continuation",
+    "source_prompt_known": false,
+    "single_stream_decode_tokens_per_second": [
+      48.609895196934154,
+      51.412164705097716,
+      53.781262409188955
+    ],
+    "single_stream_median_tokens_per_second": 51.412164705097716,
+    "single_stream_spread_percent": 10.086974327753232,
+    "aggregate_c1_tokens_per_second": 45.982288710620395,
+    "aggregate_c8_tokens_per_second": 115.75003783669834,
+    "mean_acceptance_length_including_target_token": 3.948453608247423
+  },
+  "stability": {
+    "requested_duration_seconds": 3600,
+    "actual_duration_seconds": 3814.931551082991,
+    "short_requests": 1484,
+    "short_passes": 1484,
+    "short_failures": 0,
+    "deep_injections_passed": 6,
+    "deep_injections_attempted": 6,
+    "deep_prompt_tokens": [
+      49912,
+      199912,
+      499912,
+      49912,
+      199912,
+      499912
+    ],
+    "runtime_guard_triggered": false,
+    "fatal_guard_triggered": false
+  },
+  "evidence": {
+    "private_archive_manifest_sha256": "c36955af2c89c3864dda247966bfd9d2f3190ad88a7379d8b33c3dd3242eea16",
+    "raw_evidence_published": false,
+    "aggregate_derivative_only": true
+  },
+  "limitations": [
+    "The source benchmark prompt and exact rate formula were not published.",
+    "Vision coordinate output was bimodal across unchanged retries.",
+    "Correctness, performance, and stability receipts came from separate unchanged-profile maintenance windows.",
+    "No model weights, binaries, container images, raw logs, or operational identifiers are distributed."
+  ]
+}

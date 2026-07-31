@@ -15,13 +15,34 @@ FENCE = chr(96) * 3
 REQUIRED_FILES = {
     Path("README.md"),
     Path("docs/CASE-STUDY.md"),
+    Path("docs/BUILD-DIAGNOSIS.md"),
+    Path("docs/METHODOLOGY.md"),
+    Path("docs/ACCEPTANCE-MATRIX.md"),
+    Path("docs/QA-EVIDENCE.md"),
     Path("docs/ARCHITECTURE.md"),
     Path("docs/PUBLICATION-SAFETY.md"),
     Path("docs/SHARE.md"),
+    Path("docs/X-POST.md"),
+    Path("examples/glm52-nvfp4-measured-summary.json"),
+    Path("reproduction/Dockerfile"),
+    Path("reproduction/CMakeLists.sm121-nvfp4.patch"),
+    Path("publication-policy.json"),
     Path(".github/workflows/publication-safety.yml"),
     SELF,
 }
-TEXT_SUFFIXES = {".md", ".json", ".py", ".yml", ".yaml", ".txt", ".toml"}
+TEXT_SUFFIXES = {
+    ".md",
+    ".json",
+    ".py",
+    ".yml",
+    ".yaml",
+    ".txt",
+    ".toml",
+    ".patch",
+    ".sh",
+    ".cmake",
+}
+TEXT_NAMES = {"Dockerfile", "NOTICE"}
 FORBIDDEN_NETWORKS = tuple(
     ipaddress.ip_network(value)
     for value in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10")
@@ -51,6 +72,8 @@ PATTERNS = {
         r"""(?i)["']?(?:device_id|hardware_id|serial_number|mac_address|outlet_map|controller_map|live_topology|service_inventory)["']?\s*[:=]"""
     ),
     "private_source_link": re.compile(r"https://github[.]com/GumbiiDigital/(?![A-Za-z0-9._-]+-public(?:\b|/))"),
+    "private_fleet_name": re.compile(r"\b(?:wg-spark[0-9]+|sonicforge|spark-[0-9a-f]{4})\b", re.IGNORECASE),
+    "private_service_name": re.compile(r"\b(?:gumbii-registry|compose-arangodb|cliproxyapi)\b", re.IGNORECASE),
     "markdown_image": re.compile(r"!\[[^]]*\]\([^)]+\)"),
 }
 LINK = re.compile(r"(?<!!)\[[^]]+\]\(([^)]+)\)")
@@ -58,9 +81,10 @@ LINK = re.compile(r"(?<!!)\[[^]]+\]\(([^)]+)\)")
 
 def repository_files() -> list[Path]:
     files: list[Path] = []
+    excluded_parts = {".git", ".venv", "__pycache__", "candidate-artifact", "node_modules"}
     for path in ROOT.rglob("*"):
         relative = path.relative_to(ROOT)
-        if ".git" in relative.parts or "__pycache__" in relative.parts:
+        if any(part in excluded_parts for part in relative.parts):
             continue
         if path.is_symlink():
             raise ValueError(f"symlink is not allowed: {relative}")
@@ -72,6 +96,8 @@ def repository_files() -> list[Path]:
 def scan_text(relative: Path, text: str, failures: list[str]) -> None:
     for name, pattern in PATTERNS.items():
         for match in pattern.finditer(text):
+            if name == "serial_like" and match.group(0) == "SHA256SUMS":
+                continue
             line = text.count("\n", 0, match.start()) + 1
             failures.append(f"{relative}:{line}: prohibited pattern {name}")
 
@@ -129,12 +155,15 @@ def main() -> int:
     failures.extend(f"image asset is not authorized: {path}" for path in files if path.suffix.lower() in image_suffixes)
 
     json_files = [path for path in files if path.suffix == ".json"]
-    if not json_files:
+    json_examples = [path for path in json_files if path.parts and path.parts[0] == "examples"]
+    if not json_examples:
         failures.append("at least one JSON example is required")
 
     scanned = 0
     for relative in files:
-        if relative == SELF or relative.suffix not in TEXT_SUFFIXES:
+        if relative == SELF or (
+            relative.suffix not in TEXT_SUFFIXES and relative.name not in TEXT_NAMES
+        ):
             continue
         path = ROOT / relative
         try:
@@ -144,15 +173,40 @@ def main() -> int:
             failures.append(f"{relative}: file must be ASCII text")
             continue
         scanned += 1
-        scan_text(relative, text, failures)
+        if relative != Path("publication-policy.json"):
+            scan_text(relative, text, failures)
         if relative.suffix == ".json":
             try:
                 payload = json.loads(text)
             except json.JSONDecodeError as exc:
                 failures.append(f"{relative}: invalid JSON: {exc}")
                 continue
-            if not isinstance(payload, dict) or payload.get("synthetic") is not True:
-                failures.append(f"{relative}: JSON example must declare synthetic true")
+            if relative == Path("publication-policy.json"):
+                if not isinstance(payload, dict) or payload.get("schema_version") != 1:
+                    failures.append(f"{relative}: publication policy schema must be version 1")
+                continue
+            if not isinstance(payload, dict):
+                failures.append(f"{relative}: JSON publication must be an object")
+                continue
+            if payload.get("synthetic") is True:
+                continue
+            if payload.get("record_type") == "measured_summary":
+                evidence = payload.get("evidence") or {}
+                limitations = payload.get("limitations") or []
+                if payload.get("public_safe") is not True:
+                    failures.append(f"{relative}: measured summary must declare public_safe true")
+                if payload.get("historical") is not True:
+                    failures.append(f"{relative}: measured summary must declare historical true")
+                if evidence.get("raw_evidence_published") is not False:
+                    failures.append(f"{relative}: measured summary must exclude raw evidence")
+                if evidence.get("aggregate_derivative_only") is not True:
+                    failures.append(f"{relative}: measured summary must declare aggregate derivative only")
+                if len(limitations) < 3:
+                    failures.append(f"{relative}: measured summary must preserve at least three limitations")
+                continue
+            failures.append(
+                f"{relative}: JSON must be an explicit synthetic example or reviewed measured_summary"
+            )
 
     if failures:
         print("publication safety: FAIL")
@@ -160,7 +214,15 @@ def main() -> int:
             print(f"- {failure}")
         return 1
 
-    print(f"publication safety: PASS ({scanned} text files, {len(json_files)} JSON examples)")
+    measured = sum(
+        1
+        for path in json_examples
+        if json.loads((ROOT / path).read_text(encoding="utf-8")).get("record_type") == "measured_summary"
+    )
+    print(
+        "publication safety: PASS "
+        f"({scanned} text files, {len(json_examples)} JSON examples, {measured} measured summaries)"
+    )
     return 0
 
 
