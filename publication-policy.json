@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "manifest": "docs/PUBLICATION-MANIFEST.sha256",
+  "publication_roots": [
+    ".github",
+    ".gitignore",
+    "COPYRIGHT.md",
+    "NOTICE",
+    "README.md",
+    "publication-policy.json",
+    "requirements.txt",
+    "docs",
+    "examples",
+    "reproduction",
+    "scripts"
+  ],
+  "exclude_dirs": [
+    ".git",
+    "node_modules",
+    ".venv",
+    "__pycache__"
+  ],
+  "forbidden_path_regexes": [
+    "(?i)(?:^|/)(?:drafts?|private-evidence|raw-captures?|runtime|telemetry)(?:/|$)",
+    "(?i)(?:^|/)(?:CREDIT-REQUEST-DRAFT|RESUME)\\.md$"
+  ],
+  "forbidden_text_regexes": [
+    {
+      "id": "mac-home-path",
+      "pattern": "/Users/[A-Za-z0-9._-]+/"
+    },
+    {
+      "id": "linux-user-home-path",
+      "pattern": "/home/[A-Za-z0-9._-]+/"
+    },
+    {
+      "id": "private-network-address",
+      "pattern": "(?<![0-9])(?:10\\.(?:[0-9]{1,3}\\.){2}[0-9]{1,3}|192\\.168\\.(?:[0-9]{1,3}\\.)[0-9]{1,3}|172\\.(?:1[6-9]|2[0-9]|3[01])\\.(?:[0-9]{1,3}\\.)[0-9]{1,3}|100\\.(?:6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\\.(?:[0-9]{1,3}\\.)[0-9]{1,3})(?![0-9])"
+    },
+    {
+      "id": "private-fleet-name",
+      "pattern": "(?i)\\b(?:wg-spark[0-9]+|sonicforge|spark-[0-9a-f]{4})\\b"
+    },
+    {
+      "id": "private-service-name",
+      "pattern": "(?i)\\b(?:gumbii-registry|compose-arangodb|cliproxyapi)\\b"
+    },
+    {
+      "id": "github-token",
+      "pattern": "\\b(?:gh[pousr]_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+)\\b"
+    },
+    {
+      "id": "private-key-block",
+      "pattern": "BEGIN [A-Z ]*PRIVATE KEY"
+    },
+    {
+      "id": "email-address",
+      "pattern": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b"
+    },
+    {
+      "id": "internal-work-branch",
+      "pattern": "(?i)(?<![A-Za-z0-9_-])(?:agent|codex)/[A-Za-z0-9._/-]+"
+    }
+  ],
+  "stable_pdfs": [],
+  "pdf": {
+    "require_tagged": true,
+    "require_unencrypted": true,
+    "forbid_javascript": true,
+    "forbid_attachments": true,
+    "minimum_pages": 1
+  }
+}

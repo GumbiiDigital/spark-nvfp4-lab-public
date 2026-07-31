@@ -1,27 +1,15 @@
 # Share Copy
 
-## Short post
+The maintained X-ready source is [X-POST.md](X-POST.md).
 
-I built a public-safe NVFP4 experiment framework that treats provenance, memory, speed, quality, and reliability as separate evidence. A smaller or faster artifact is not automatically a better one.
+## Short version
 
-## Thread-style post
+I reproduced Light Foundry's GLM-5.2-Vision NVFP4 result on my eight GB10
+cluster: 1M context, a 1,264,256-token KV pool, 45.98 tok/s at c1, and 115.75
+tok/s aggregate at c8.
 
-**Opening**
+The fresh 63.6-minute soak passed 1,484/1,484 short requests and all six deep
+50K/200K/500K injections.
 
-The number is not the benchmark. The benchmark is the contract that makes the number interpretable.
-
-**The framework**
-
-Record provenance, quantization intent, controlled variables, warmup, workload, failures, retries, quality gates, and limitations.
-
-**Why it matters**
-
-Quantization can move memory, speed, startup, quality, and reliability in different directions.
-
-**The public version**
-
-The example is synthetic and qualitative. It includes no model, quantized artifact, private measurement, path, endpoint, or execution claim.
-
-**The lesson**
-
-Reproducibility starts before measurement, with provenance and controls.
+The repo includes the exact native-SM121 build delta, methodology, failure
+record, public result JSON, and sanitized harnesses.
