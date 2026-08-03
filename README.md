@@ -196,7 +196,9 @@ not an NVIDIA, Z.ai, vLLM, Light Foundry, or ciprianveg endorsement.
 No model weights, CUDA libraries, NVIDIA libraries, compiled extensions, or
 container images are redistributed here.
 
-## Copyright
+## License
 
-Copyright (c) 2026 Gumbii Digital. All rights reserved. See
-[COPYRIGHT.md](COPYRIGHT.md) for the publication and reuse terms.
+Gumbii Digital's original code, documentation, examples, data, diagrams, and
+media are available under the [MIT License](LICENSE). Third-party components,
+assets, product names, and trademarks retain their respective terms; see
+[COPYRIGHT.md](COPYRIGHT.md) for scope.
