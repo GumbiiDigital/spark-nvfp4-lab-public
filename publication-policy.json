@@ -4,6 +4,7 @@
   "publication_roots": [
     ".github",
     ".gitignore",
+    "LICENSE",
     "COPYRIGHT.md",
     "NOTICE",
     "README.md",

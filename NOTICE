@@ -25,5 +25,5 @@ NVIDIA, DGX, CUDA, GB10, GLM, vLLM, Hugging Face, and other third-party names
 and trademarks remain the property of their respective owners. Their use is
 for accurate technical identification and does not imply endorsement.
 
-Original material in this repository remains governed by COPYRIGHT.md unless
-a file or third-party notice states otherwise.
+Original material in this repository is licensed under MIT as described in
+LICENSE and COPYRIGHT.md unless a file or third-party notice states otherwise.
